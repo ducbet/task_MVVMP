@@ -12,6 +12,7 @@ public interface MainContract {
     interface View extends BaseView {
         void onShowAddTaskInputDialog();
         void onShowEditTaskInputDialog(Task task);
+        void onChangeCheckBox(Task task);
         void onShowDeleteTaskConfirmDialog(Task task);
         void onAddTaskSuccess(Task task);
         void onFailed(String msg);
