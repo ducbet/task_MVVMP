@@ -50,10 +50,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mRecyclerView.setAdapter(mTaskAdapter);
     }
 
-    public MainContract.Presenter getPresenter() {
-        return mPresenter;
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -116,6 +112,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     }
                 })
                 .show();
+    }
+
+    @Override
+    public void onChangeCheckBox(Task task) {
+        mPresenter.editTask(task);
     }
 
     @Override
