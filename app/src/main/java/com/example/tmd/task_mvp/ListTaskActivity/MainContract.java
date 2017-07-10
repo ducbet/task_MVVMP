@@ -10,16 +10,19 @@ import java.util.List;
  */
 public interface MainContract {
     interface View extends BaseView {
-        void onShowInputDialog();
+        void onShowAddTaskInputDialog();
+        void onShowEditTaskInputDialog(Task task);
+        void onShowDeleteTaskConfirmDialog(Task task);
         void onAddTaskSuccess(Task task);
-        void onAddTaskFailed(String msg);
+        void onFailed(String msg);
         void onGetAllTaskSuccess(List<Task> listTasks);
-        void onGetAllTaskFailed(String msg);
+        void onEditTaskSuccess(Task task);
+        void onDeleteTaskSuccess(Task task);
     }
 
     interface Presenter extends BasePresenter {
         void addTask(Task task);
-        void editTask();
-        void deleteTask();
+        void editTask(Task task);
+        void deleteTask(Task task);
     }
 }

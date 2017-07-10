@@ -43,11 +43,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     private void initView() {
         mListTasks = new ArrayList<>();
-        mTaskAdapter = new TaskAdapter(mListTasks);
+        mTaskAdapter = new TaskAdapter(this, mListTasks);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setAdapter(mTaskAdapter);
+    }
+
+    public MainContract.Presenter getPresenter() {
+        return mPresenter;
     }
 
     @Override
@@ -61,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_add:
-                onShowInputDialog();
+                onShowAddTaskInputDialog();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -73,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void onShowInputDialog() {
+    public void onShowAddTaskInputDialog() {
         final EditText editText = new EditText(this);
         editText.setHint("Title");
         new AlertDialog.Builder(this).setTitle("New task")
@@ -94,13 +98,51 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public void onShowEditTaskInputDialog(final Task task) {
+        final EditText editText = new EditText(this);
+        editText.setHint("Title");
+        new AlertDialog.Builder(this).setTitle("New task")
+                .setView(editText)
+                .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        task.setTitle(editText.getText().toString());
+                        mPresenter.editTask(task);
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .show();
+    }
+
+    @Override
+    public void onShowDeleteTaskConfirmDialog(final Task task) {
+        new AlertDialog.Builder(this).setTitle("New task")
+                .setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mPresenter.deleteTask(task);
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .show();
+    }
+
+    @Override
     public void onAddTaskSuccess(Task task) {
         mListTasks.add(task);
         mTaskAdapter.notifyItemInserted(mListTasks.size());
     }
 
     @Override
-    public void onAddTaskFailed(String msg) {
+    public void onFailed(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 
@@ -112,7 +154,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void onGetAllTaskFailed(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    public void onEditTaskSuccess(Task task) {
+        int index = mListTasks.indexOf(task);
+        mListTasks.set(index, task);
+        mTaskAdapter.notifyItemChanged(index);
+    }
+
+    @Override
+    public void onDeleteTaskSuccess(Task task) {
+        int index = mListTasks.indexOf(task);
+        mListTasks.remove(index);
+        mTaskAdapter.notifyItemRemoved(index);
     }
 }

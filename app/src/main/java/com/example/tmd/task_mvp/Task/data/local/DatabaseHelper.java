@@ -20,7 +20,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TaskContractDatabase.TaskDatabaseEntry._ID
             + " INTEGER PRIMARY KEY NOT NULL, "
             + TaskContractDatabase.TaskDatabaseEntry.COLUMN_TITLE
-            + " TEXT DEFAULT \"\")";
+            + " TEXT DEFAULT \"\", "
+            + TaskContractDatabase.TaskDatabaseEntry.COLUMN_FINISHED
+            + " INTEGER NOT NULL)";
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);

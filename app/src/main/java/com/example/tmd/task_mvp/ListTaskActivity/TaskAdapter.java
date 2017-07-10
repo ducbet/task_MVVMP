@@ -1,9 +1,12 @@
 package com.example.tmd.task_mvp.ListTaskActivity;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.tmd.task_mvp.R;
 import com.example.tmd.task_mvp.Task.Model.Task;
@@ -16,8 +19,10 @@ import java.util.List;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     private List<Task> mList;
+    private Context mContext;
 
-    public TaskAdapter(List<Task> list) {
+    public TaskAdapter(Context context, List<Task> list) {
+        mContext = context;
         mList = list;
     }
 
@@ -40,20 +45,45 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         return 0;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView mTxtId;
+        private Task mTask;
+        private CheckBox mCheckBox;
         private TextView mTxtTitle;
+        private ImageView mImgEdit;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mTxtId = (TextView) itemView.findViewById(R.id.text_view_id);
+            mCheckBox = (CheckBox) itemView.findViewById(R.id.check_box);
+            mCheckBox.setOnClickListener(this);
             mTxtTitle = (TextView) itemView.findViewById(R.id.text_view_title);
+            itemView.findViewById(R.id.image_view_edit).setOnClickListener(this);
+            itemView.findViewById(R.id.image_view_delete).setOnClickListener(this);
         }
 
         public void bindData(Task task) {
-            mTxtId.setText(String.valueOf(task.getId()));
+            mTask = task;
+            mCheckBox.setChecked(task.isFinished());
             mTxtTitle.setText(task.getTitle());
+        }
+
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.image_view_edit:
+                    ((MainActivity) mContext).onShowEditTaskInputDialog(mTask);
+                    break;
+                case R.id.check_box:
+                    mTask.setFinished(!mTask.isFinished());
+                    mCheckBox.setChecked(mTask.isFinished());
+                    ((MainActivity) mContext).getPresenter().editTask(mTask);
+                    break;
+                case R.id.image_view_delete:
+                    ((MainActivity) mContext).onShowDeleteTaskConfirmDialog(mTask);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

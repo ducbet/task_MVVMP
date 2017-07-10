@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import com.example.tmd.task_mvp.Task.Model.Task;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,8 @@ public class _CRUDHelper extends DatabaseHelper {
         Cursor cursor =
                 database.query(TaskContractDatabase.TaskDatabaseEntry.TABLE_NAME, new String[] {
                         TaskContractDatabase.TaskDatabaseEntry._ID,
-                        TaskContractDatabase.TaskDatabaseEntry.COLUMN_TITLE
+                        TaskContractDatabase.TaskDatabaseEntry.COLUMN_TITLE,
+                        TaskContractDatabase.TaskDatabaseEntry.COLUMN_FINISHED
                 }, null, null, null, null, null, null);
         if (cursor != null) {
             while (cursor.moveToNext()) {
@@ -31,7 +33,9 @@ public class _CRUDHelper extends DatabaseHelper {
                         cursor.getColumnIndex(TaskContractDatabase.TaskDatabaseEntry._ID));
                 String title = cursor.getString(
                         cursor.getColumnIndex(TaskContractDatabase.TaskDatabaseEntry.COLUMN_TITLE));
-                mList.add(new Task(id, title));
+                boolean isFinished = cursor.getInt(cursor.getColumnIndex(
+                        TaskContractDatabase.TaskDatabaseEntry.COLUMN_FINISHED)) != 0;
+                mList.add(new Task(id, isFinished, title));
             }
         }
         cursor.close();
@@ -43,12 +47,30 @@ public class _CRUDHelper extends DatabaseHelper {
         SQLiteDatabase database = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(TaskContractDatabase.TaskDatabaseEntry.COLUMN_TITLE, task.getTitle());
+        values.put(TaskContractDatabase.TaskDatabaseEntry.COLUMN_FINISHED, task.isFinished());
         long result =
                 database.insert(TaskContractDatabase.TaskDatabaseEntry.TABLE_NAME, null, values);
         if (result >= 0) {
             task.setId((int) result);
         }
         database.close();
-        return result >= 0;
+        return result >= 1;// id bat dau tu 1
+    }
+
+    public boolean editTask(Task task) {
+        SQLiteDatabase database = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TaskContractDatabase.TaskDatabaseEntry.COLUMN_TITLE, task.getTitle());
+        values.put(TaskContractDatabase.TaskDatabaseEntry.COLUMN_FINISHED, task.isFinished());
+        int result = database.update(TaskContractDatabase.TaskDatabaseEntry.TABLE_NAME, values,
+                TaskContractDatabase.TaskDatabaseEntry._ID + " = " + task.getId(), null);
+        return result > 0; // result la so row bi thay doi
+    }
+
+    public boolean deleteTask(Task task) {
+        SQLiteDatabase database = getWritableDatabase();
+        int result = database.delete(TaskContractDatabase.TaskDatabaseEntry.TABLE_NAME,
+                TaskContractDatabase.TaskDatabaseEntry._ID + " = " + task.getId(), null);
+        return result > 0; // result la so row bi delete
     }
 }
