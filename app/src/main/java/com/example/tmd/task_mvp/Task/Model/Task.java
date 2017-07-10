@@ -5,10 +5,15 @@ package com.example.tmd.task_mvp.Task.Model;
  */
 public class Task {
     private int mId;
+    private boolean mIsFinished;
     private String mTitle;
 
-    public Task(int id, String title) {
+    public Task() {
+    }
+
+    public Task(int id, boolean isFinished, String title) {
         mId = id;
+        mIsFinished = isFinished;
         mTitle = title;
     }
 
@@ -30,5 +35,13 @@ public class Task {
 
     public void setTitle(String title) {
         mTitle = title;
+    }
+
+    public boolean isFinished() {
+        return mIsFinished;
+    }
+
+    public void setFinished(boolean finished) {
+        mIsFinished = finished;
     }
 }

@@ -30,7 +30,7 @@ public class TaskPresenter implements MainContract.Presenter {
 
             @Override
             public void onFailed(String msg) {
-                mView.onGetAllTaskFailed(msg);
+                mView.onFailed(msg);
             }
         });
     }
@@ -45,16 +45,38 @@ public class TaskPresenter implements MainContract.Presenter {
 
             @Override
             public void onFailed(String msg) {
-                mView.onAddTaskFailed(msg);
+                mView.onFailed(msg);
             }
         });
     }
 
     @Override
-    public void editTask() {
+    public void editTask(final Task task) {
+        mTaskDataSource.editTask(task, new TaskDataSource.Callback<Boolean>() {
+            @Override
+            public void onSuccessfull(Boolean data) {
+                mView.onEditTaskSuccess(task);
+            }
+
+            @Override
+            public void onFailed(String msg) {
+                mView.onFailed(msg);
+            }
+        });
     }
 
     @Override
-    public void deleteTask() {
+    public void deleteTask(final Task task) {
+        mTaskDataSource.deleteTask(task, new TaskDataSource.Callback<Boolean>() {
+            @Override
+            public void onSuccessfull(Boolean data) {
+                mView.onDeleteTaskSuccess(task);
+            }
+
+            @Override
+            public void onFailed(String msg) {
+                mView.onFailed(msg);
+            }
+        });
     }
 }
