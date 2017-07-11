@@ -1,6 +1,5 @@
 package com.example.tmd.task_mvp.ListTaskActivity;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +18,10 @@ import java.util.List;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     private List<Task> mList;
-    private Context mContext;
+    private MainContract.View mView;
 
-    public TaskAdapter(Context context, List<Task> list) {
-        mContext = context;
+    public TaskAdapter(MainContract.View view, List<Task> list) {
+        mView = view;
         mList = list;
     }
 
@@ -71,15 +70,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.image_view_edit:
-                    ((MainActivity) mContext).onShowEditTaskInputDialog(mTask);
+                    mView.onShowEditTaskInputDialog(mTask);
                     break;
                 case R.id.check_box:
                     mTask.setFinished(!mTask.isFinished());
                     mCheckBox.setChecked(mTask.isFinished());
-                    ((MainActivity) mContext).getPresenter().editTask(mTask);
+                    mView.onChangeCheckBox(mTask);
                     break;
                 case R.id.image_view_delete:
-                    ((MainActivity) mContext).onShowDeleteTaskConfirmDialog(mTask);
+                    mView.onShowDeleteTaskConfirmDialog(mTask);
                     break;
                 default:
                     break;
