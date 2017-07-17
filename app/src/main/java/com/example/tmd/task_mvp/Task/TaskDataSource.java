@@ -1,7 +1,7 @@
-package com.example.tmd.task_mvp.Task.data;
+package com.example.tmd.task_mvp.Task;
 
 import android.telecom.Call;
-import com.example.tmd.task_mvp.Task.Model.Task;
+import com.example.tmd.task_mvp.ViewModel.Task;
 import java.util.List;
 
 /**

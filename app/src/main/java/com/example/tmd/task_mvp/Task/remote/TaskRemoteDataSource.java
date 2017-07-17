@@ -1,8 +1,8 @@
-package com.example.tmd.task_mvp.Task.data.remote;
+package com.example.tmd.task_mvp.Task.remote;
 
 import android.content.Context;
-import com.example.tmd.task_mvp.Task.Model.Task;
-import com.example.tmd.task_mvp.Task.data.TaskDataSource;
+import com.example.tmd.task_mvp.Task.TaskDataSource;
+import com.example.tmd.task_mvp.ViewModel.Task;
 
 /**
  * Created by tmd on 07/07/2017.

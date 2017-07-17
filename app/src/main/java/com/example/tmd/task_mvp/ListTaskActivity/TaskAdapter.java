@@ -2,10 +2,11 @@ package com.example.tmd.task_mvp.ListTaskActivity;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import com.example.tmd.task_mvp.R;
-import com.example.tmd.task_mvp.Task.Model.Task;
+import com.example.tmd.task_mvp.ViewModel.TaskViewModel;
 import com.example.tmd.task_mvp.databinding.ItemTaskBinding;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,41 +17,38 @@ import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
-    private List<Task> mList = new ArrayList<>();
-    private MainContract.View mView;
+    private List<TaskViewModel> mList = new ArrayList<>();
 
-    public TaskAdapter() {
-    }
-
-    public void updateData(List<Task> list) {
+    public void updateData(List<TaskViewModel> list) {
+//        Log.d("MY_TAG", "notifyDataSetChanged: ");
         if (list == null) return;
         mList.addAll(list);
         notifyDataSetChanged();
     }
 
-    public void updateData(Task task) {
+    public void updateData(TaskViewModel taskViewModel) {
+//        Log.d("MY_TAG", "updateData: ");
         int index;
-        if (mList.contains(task)) {
-            index = mList.indexOf(task);
-            mList.set(index, task);
+        if (mList.contains(taskViewModel)) {
+            index = mList.indexOf(taskViewModel);
+            mList.set(index, taskViewModel);
         } else {
-            mList.add(task);
+            mList.add(taskViewModel);
             index = mList.size() - 1;
+            notifyItemChanged(index);
         }
-        notifyItemChanged(index);
     }
 
-    public void deleteTask(Task task) {
-        int index = mList.indexOf(task);
+    public void deleteTask(TaskViewModel taskViewModel) {
+        int index = mList.indexOf(taskViewModel);
         if (index >= 0) {
             mList.remove(index);
         }
-        notifyDataSetChanged();
+        notifyItemRemoved(index);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        mView = (MainContract.View) parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         ItemTaskBinding itemTaskBinding =
                 DataBindingUtil.inflate(layoutInflater, R.layout.item_task, parent, false);
@@ -59,8 +57,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Task task = mList.get(position);
-        holder.bindData(task);
+        TaskViewModel taskViewModel = mList.get(position);
+        holder.bindData(taskViewModel);
     }
 
     @Override
@@ -76,11 +74,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         public ViewHolder(ItemTaskBinding itemTaskBinding) {
             super(itemTaskBinding.getRoot());
             mItemTaskBinding = itemTaskBinding;
-            mItemTaskBinding.setActivity((MainActivity) itemTaskBinding.getRoot().getContext());
         }
 
-        public void bindData(Task task) {
-            mItemTaskBinding.setTask(task);
+        public void bindData(TaskViewModel taskViewModel) {
+            mItemTaskBinding.setViewModel(taskViewModel);
         }
     }
 }

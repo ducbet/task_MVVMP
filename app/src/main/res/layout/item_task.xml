@@ -4,11 +4,8 @@
     >
     <data>
         <variable
-            name="activity"
-            type="com.example.tmd.task_mvp.ListTaskActivity.MainActivity"/>
-        <variable
-            name="task"
-            type="com.example.tmd.task_mvp.Task.Model.Task"
+            name="viewModel"
+            type="com.example.tmd.task_mvp.ViewModel.TaskViewModel"
             />
     </data>
     <android.support.v7.widget.CardView
@@ -29,8 +26,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:checked="@{task.finished}"
-                android:onClick="@{()->activity.onChangeCheckBox(task)}"
+                android:checked="@{viewModel.task.finished}"
+                android:onClick="@{()->viewModel.onChangeCheckBox()}"
+
                 />
 
             <TextView
@@ -40,7 +38,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_weight="1"
-                android:text="@{task.title}"
+                android:text="@{viewModel.task.title}"
                 android:textColor="@android:color/black"
                 android:textSize="30sp"
                 />
@@ -51,8 +49,9 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="5dp"
+                android:onClick="@{()->viewModel.onShowEditTaskInputDialog()}"
                 android:src="@drawable/ic_mode_edit_black_24px"
-                android:onClick="@{()->activity.onShowEditTaskInputDialog(task)}"
+
                 />
 
             <ImageView
@@ -61,8 +60,8 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="5dp"
+                android:onClick="@{()->viewModel.onShowDeleteTaskConfirmDialog()}"
                 android:src="@drawable/ic_delete_forever_black_24px"
-                android:onClick="@{()->activity.onShowDeleteTaskConfirmDialog(task)}"
                 />
 
         </LinearLayout>

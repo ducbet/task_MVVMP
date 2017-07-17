@@ -1,8 +1,8 @@
-package com.example.tmd.task_mvp.Task.data;
+package com.example.tmd.task_mvp.Task;
 
-import com.example.tmd.task_mvp.Task.Model.Task;
-import com.example.tmd.task_mvp.Task.data.local.TaskLocalDataSource;
-import com.example.tmd.task_mvp.Task.data.remote.TaskRemoteDataSource;
+import com.example.tmd.task_mvp.Task.local.TaskLocalDataSource;
+import com.example.tmd.task_mvp.Task.remote.TaskRemoteDataSource;
+import com.example.tmd.task_mvp.ViewModel.Task;
 
 /**
  * Created by tmd on 07/07/2017.

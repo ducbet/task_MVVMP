@@ -1,9 +1,8 @@
-package com.example.tmd.task_mvp.Task.data.local;
+package com.example.tmd.task_mvp.Task.local;
 
 import android.content.Context;
-import android.util.Log;
-import com.example.tmd.task_mvp.Task.Model.Task;
-import com.example.tmd.task_mvp.Task.data.TaskDataSource;
+import com.example.tmd.task_mvp.Task.TaskDataSource;
+import com.example.tmd.task_mvp.ViewModel.Task;
 
 /**
  * Created by tmd on 07/07/2017.
@@ -11,11 +10,9 @@ import com.example.tmd.task_mvp.Task.data.TaskDataSource;
 
 public class TaskLocalDataSource implements TaskDataSource {
 
-    private Context mContext;
     private _CRUDHelper mCRUDHelper;
 
     public TaskLocalDataSource(Context context) {
-        mContext = context;
         mCRUDHelper = new _CRUDHelper(context);
     }
 
@@ -25,7 +22,7 @@ public class TaskLocalDataSource implements TaskDataSource {
     }
 
     @Override
-    public void addTask(Task task, Callback<Boolean> callback) {
+    public void addTask(Task task, TaskDataSource.Callback<Boolean> callback) {
         if (mCRUDHelper.insertTask(task)) {
             callback.onSuccessfull(Boolean.TRUE);
         } else {

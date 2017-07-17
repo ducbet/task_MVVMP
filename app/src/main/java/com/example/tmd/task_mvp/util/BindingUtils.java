@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import com.example.tmd.task_mvp.ListTaskActivity.MainContract;
 import com.example.tmd.task_mvp.ListTaskActivity.TaskAdapter;
-import com.example.tmd.task_mvp.Task.Model.Task;
 
 /**
  * Created by tmd on 13/07/2017.

@@ -1,11 +1,10 @@
-package com.example.tmd.task_mvp.Task.data.local;
+package com.example.tmd.task_mvp.Task.local;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-import com.example.tmd.task_mvp.Task.Model.Task;
+import com.example.tmd.task_mvp.ViewModel.Task;
 import java.util.ArrayList;
 import java.util.List;
 
