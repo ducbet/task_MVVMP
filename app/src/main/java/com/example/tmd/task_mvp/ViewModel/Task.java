@@ -1,9 +1,12 @@
-package com.example.tmd.task_mvp.Task.Model;
+package com.example.tmd.task_mvp.ViewModel;
+
+import android.databinding.BaseObservable;
 
 /**
  * Created by tmd on 07/07/2017.
  */
-public class Task {
+public class Task extends BaseObservable {
+
     private int mId;
     private boolean mIsFinished;
     private String mTitle;
@@ -26,6 +29,7 @@ public class Task {
     }
 
     public void setId(int id) {
+        notifyChange();
         mId = id;
     }
 
@@ -34,6 +38,7 @@ public class Task {
     }
 
     public void setTitle(String title) {
+        notifyChange();
         mTitle = title;
     }
 
@@ -42,6 +47,7 @@ public class Task {
     }
 
     public void setFinished(boolean finished) {
+        notifyChange();
         mIsFinished = finished;
     }
 }
